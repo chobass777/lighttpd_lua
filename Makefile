@@ -20,12 +20,14 @@ depend:
 	(cd $(ZLIB_SRC) && ./configure && make)
 	$(TAR) $(PCRE_SRC).tar.gz
 	(cd $(PCRE_SRC) && ./configure --prefix=$(CURDIR)/pcre && make && make install)
+	$(TAR) $(LIGHTTPD_SRC).tar.gz
 	
 all:
 	(cd $(LIGHTTPD_SRC) && ./configure --prefix="$(CURDIR)/lighttpd" \
 		--with-lua LUA_CFLAGS="-I$(CURDIR)/lua/include" LUA_LIBS="$(CURDIR)/lua/lib/liblua.a"  \
 		--with-pcre PCRECONFIG="$(CURDIR)/pcre/bin/pcre-config" \
-		--with-openssl="$(CURDIR)/openssl" )
+		--with-openssl="$(CURDIR)/openssl" && \
+		make all)
 
 install:
 	(cd $(LIGHTTPD_SRC) && make install)
